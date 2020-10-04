@@ -11,16 +11,15 @@ weatherForm.addEventListener('submit', (e) => {
   messageOne.textContent = 'Loading...';
   messageTwo.textContent = '';
 
-  fetch('http://localhost:3000/weather?address=' + location).then(
-    (response) => {
-      response.json().then((data) => {
-        if (data.error) {
-          messageOne.textContent = data.error;
-        } else {
-          messageOne.textContent = data.location;
-          messageTwo.textContent = data.forecast;
-        }
-      });
-    }
-  );
+  //We change to prefix: "http://localhost:3000" because of Heroku PORT || LocalHost:3000
+  fetch('/weather?address=' + location).then((response) => {
+    response.json().then((data) => {
+      if (data.error) {
+        messageOne.textContent = data.error;
+      } else {
+        messageOne.textContent = data.location;
+        messageTwo.textContent = data.forecast;
+      }
+    });
+  });
 });
