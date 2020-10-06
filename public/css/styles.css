@@ -79,13 +79,15 @@ button {
 
 #message-2,
 #message-4,
-#message-5 {
+#message-5,
+#message-6 {
   font-size: 1em;
   font-weight: 600;
 }
 
 #message-4,
-#message-5 {
+#message-5,
+#message-6 {
   text-align: left;
 }
 

@@ -17,6 +17,7 @@ const forecast = (latitude, longitude, callback) => {
       const {
         weather_descriptions,
         temperature,
+        feelslike,
         precip,
         wind_speed,
       } = response.body.current;
@@ -25,6 +26,8 @@ const forecast = (latitude, longitude, callback) => {
         weather_descriptions[0] +
           ',' +
           temperature +
+          ',' +
+          feelslike +
           ',' +
           precip +
           ',' +
