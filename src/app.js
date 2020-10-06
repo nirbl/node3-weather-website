@@ -1,8 +1,8 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
-const geocode = require('./utils/geocode');
-const forecast = require('./utils/forecast');
+const geocode = require('../src/utils/geocode');
+const forecast = require('../src/utils/forecast');
 
 const app = express();
 // ******************   *******/
@@ -23,25 +23,38 @@ hbs.registerPartials(partialsPath);
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath));
 
-app.get('', (req, res) => {
+app.get('/', (req, res) => {
   res.render('index', {
-    title: 'Weather',
-    name: 'Andrew Mead',
+    title: 'Weather App',
+    name: 'Nir Barzilai',
   });
 });
 
 app.get('/about', (req, res) => {
   res.render('about', {
-    title: 'About Me',
-    name: 'Andrew Mead',
+    title: 'About me',
+    name: 'Nir Barzilai',
   });
 });
 
 app.get('/help', (req, res) => {
   res.render('help', {
-    helpText: 'This is some helpful text.',
     title: 'Help',
-    name: 'Andrew Mead',
+    email: 'help@mywebsite.org',
+    name: 'Nir Barzilai',
+  });
+});
+
+app.get('/products', (req, res) => {
+  if (!req.query.search) {
+    return res.send({
+      error: 'You must provide a search term. ',
+    });
+  }
+
+  console.log(req.query.search);
+  res.send({
+    products: [],
   });
 });
 
@@ -59,38 +72,38 @@ app.get('/weather', (req, res) => {
         return res.send({ error });
       }
 
-      forecast(latitude, longitude, (error, forecastData) => {
+      forecast(latitude, longitude, (error, forecastdata) => {
         if (error) {
           return res.send({ error });
         }
 
+        // check address
+        console.log(req.query.address);
+
         res.send({
-          forecast: forecastData,
+          weather: forecastdata,
           location,
           address: req.query.address,
         });
       });
     }
   );
+
+  // console.log(req.query.address)
+  // res.send({
+  //     weather: forecastdata,
+  //     address: req.query.address
+  // })
 });
 
-app.get('/products', (req, res) => {
-  if (!req.query.search) {
-    return res.send({
-      error: 'You must provide a search term',
-    });
-  }
+// app.com
+// app.com/help
+// app.com/about
 
-  console.log(req.query.search);
-  res.send({
-    products: [],
-  });
-});
+// Below must be defined after all other app.get are defined.
 
 app.get('/help/*', (req, res) => {
   res.render('404', {
-    title: '404',
-    name: 'Andrew Mead',
     errorMessage: 'Help article not found.',
   });
 });
@@ -98,18 +111,11 @@ app.get('/help/*', (req, res) => {
 app.get('*', (req, res) => {
   res.render('404', {
     title: '404',
-    name: 'Andrew Mead',
+    name: 'Nir Barzilai',
     errorMessage: 'Page not found.',
   });
 });
 
-// For Local Host
-/* app.listen(3000, () => {
-  console.log('Server is up on port 3000.');
-});
- */
-
-// For Heroku Host
 app.listen(port, () => {
-  console.log('Server is up on port' + port);
+  console.log('Server is up on port ' + port);
 });

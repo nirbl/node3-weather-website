@@ -1,17 +1,38 @@
-const request = require('request')
+const request = require('postman-request');
 
 const forecast = (latitude, longitude, callback) => {
-    const url = 'https://api.darksky.net/forecast/9d1465c6f3bb7a6c71944bdd8548d026/' + latitude + ',' + longitude
+  const url1 =
+    'http://api.weatherstack.com/current?access_key=aaae81c7591eab88bf7da1fdf84be3ab&query=' +
+    latitude +
+    ',' +
+    longitude +
+    '&units=m';
 
-    request({ url, json: true }, (error, { body }) => {
-        if (error) {
-            callback('Unable to connect to weather service!', undefined)
-        } else if (body.error) {
-            callback('Unable to find location', undefined)
-        } else {
-            callback(undefined, body.daily.data[0].summary + ' It is currently ' + body.currently.temperature + ' degress out. There is a ' + body.currently.precipProbability + '% chance of rain.')
-        }
-    })
-}
+  request({ url: url1, json: true }, (error, response) => {
+    if (error) {
+      callback('unable to connect to weather service', undefined);
+    } else if (response.body.error) {
+      callback(response.body.error.info, undefined);
+    } else {
+      const {
+        weather_descriptions,
+        temperature,
+        precip,
+        wind_speed,
+      } = response.body.current;
+      callback(
+        undefined,
+        weather_descriptions[0] +
+          ',' +
+          temperature +
+          ',' +
+          precip +
+          ',' +
+          wind_speed
+      );
+      // callback(undefined, weather_descriptions[0] + ' Temperature: ' + temperature + ' Fahrenheit. ' + ' Chance of rain: ' + precip + ' Wind: ' + wind_speed)
+    }
+  });
+};
 
-module.exports = forecast
+module.exports = forecast;

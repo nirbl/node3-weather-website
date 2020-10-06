@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 
-<html>
+{{!-- To Check --}}
+<!-- <html lang="en"> -->
 
 <head>
+    {{!-- To Check --}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Weather</title>
     <link rel="icon" href="/img/weather.png">
     <link rel="stylesheet" href="/css/styles.css">
@@ -10,22 +15,29 @@
 
 <body>
     <div class="main-content">
-        {{>header}}
+        {{> header}}
 
         <p>Use this site to get your weather!</p>
 
-        <form>
-            <input placeholder="Location">
+        <form action="">
+            <input placeholder="Location" type="text">
             <button>Search</button>
         </form>
 
         <p id="message-1"></p>
-        <p id="message-2"></p>
+        <div class="forecast-content">
+            <p id="message-2" class="grid-item"></p>
+            <p id="message-3" class="grid-item"></p>
+            <div class="grid-item">
+                <p id="message-4"></p>
+                <p id="message-5"></p>
+            </div>
+        </div>
     </div>
 
-    {{>footer}}
-
-    <script src="/js/app.js"></script>
+    {{> footer}}
 </body>
+
+<script src='/js/app.js'></script>
 
 </html>
